@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container glass">
+    <header>
+      <h1>KoalaFlyff</h1>
+      <div id="status-indicator" class="indicator"></div>
+    </header>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-target="panel-settings">Settings</button>
+      <button class="tab-btn" data-target="panel-history">History</button>
+      <button class="tab-btn" data-target="panel-logs">Logs</button>
+    </div>
+
+    <!-- SETTINGS PANEL -->
+    <div id="panel-settings" class="panel active">
+
+      <!-- Global Tab Selection -->
+      <div class="card">
+        <h3>Tabs</h3>
+        <div class="form-group">
+          <label for="tabASelect">Main Character (Listener Tab)</label>
+          <div class="select-wrapper">
+            <select id="tabASelect">
+              <option value="">Select a tab...</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="tabBSelect">Support Character (Target Tab)</label>
+          <div class="select-wrapper">
+            <select id="tabBSelect">
+              <option value="">Select a tab...</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Key Mappings List -->
+      <div class="card">
+        <div class="card-header-row">
+          <h3>Key Mappings</h3>
+          <button id="addMappingBtn" class="btn-add" title="Add mapping">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add
+          </button>
+        </div>
+        <div id="mappings-list" class="mappings-list">
+          <!-- Mapping rows injected by popup.js -->
+        </div>
+      </div>
+
+      <!-- Toggle Key + Logging -->
+      <div class="card">
+        <h3>Options</h3>
+        <div class="form-group">
+          <label for="toggleKey">Service Toggle Hotkey</label>
+          <input type="text" id="toggleKey" maxlength="1" placeholder="P">
+        </div>
+        <div class="form-group checkbox-group">
+          <label for="enableLogsCheckbox">Enable Debug Logging</label>
+          <input type="checkbox" id="enableLogsCheckbox">
+        </div>
+      </div>
+
+      <button id="toggleBtn" class="btn primary">
+        <span class="btn-text">Start Service</span>
+        <div class="glow"></div>
+      </button>
+      <div id="live-timer" class="live-timer" style="display:none;">Current Session: 00:00:00</div>
+    </div>
+
+    <!-- HISTORY PANEL -->
+    <div id="panel-history" class="panel">
+      <div class="card history-card">
+        <h3>Session History</h3>
+        <div id="history-list" class="history-list">
+          <p class="empty-state">Loading history...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGS PANEL -->
+    <div id="panel-logs" class="panel">
+      <div class="card history-card">
+        <h3>System Logs</h3>
+        <div id="logs-list" class="history-list">
+          <p class="empty-state">No logs captured yet...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (falls später hinzugefügt)
+node_modules/
+npm-debug.log*
+
+# Extension specific
+*.pem
+*.crx
