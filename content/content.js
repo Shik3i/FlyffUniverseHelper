@@ -20,7 +20,7 @@ const LOG = (...args) => {
 };
 
 let isActive = false;
-let currentToggleKey = 'p';
+let currentToggleKey = 'ö';
 // All keyA values we should intercept — kept in sync with mappings
 let watchedKeys = new Set();
 

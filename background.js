@@ -12,7 +12,7 @@ let config = {
   tabAId: null,
   tabBId: null,
   mappings: [{ keyA: 'c', keyB: '1' }],
-  toggleKey: 'p',
+  toggleKey: 'ö',
   enableLogs: false,
   isRunning: false
 };
