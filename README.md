@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="icon.png" width="128" alt="KoalaFlyff Logo">
   
   <h1>🐨 KoalaFlyff</h1>
   <p><strong>The Ultimate Multi-Boxing Companion for Flyff Universe</strong></p>
