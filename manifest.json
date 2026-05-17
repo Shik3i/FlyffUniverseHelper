@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "KoalaFlyff",
-  "version": "1.7",
+  "version": "1.2",
   "description": "Cross-tab key mapper and multi-boxing utility for WebGL games.",
   "permissions": [
     "storage",

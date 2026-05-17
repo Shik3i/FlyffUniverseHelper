@@ -193,7 +193,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     if (response.tabAId) tabASelect.value = String(response.tabAId);
     if (response.tabBId) tabBSelect.value = String(response.tabBId);
-    if (response.toggleKey !== undefined) toggleKeyInput.value = response.toggleKey;
+    if (response.toggleKey !== undefined) {
+      toggleKeyInput.value = response.toggleKey === ' ' ? 'Space' : response.toggleKey;
+    }
     if (response.enableLogs !== undefined) enableLogsCheckbox.checked = response.enableLogs;
 
     renderMappings();
@@ -211,7 +213,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       tabAId: !isNaN(parsedTabA) ? parsedTabA : (currentConfig.tabAId || null),
       tabBId: !isNaN(parsedTabB) ? parsedTabB : (currentConfig.tabBId || null),
       mappings: currentConfig.mappings || [],
-      toggleKey: toggleKeyInput.value.trim().toLowerCase(),
+      toggleKey: toggleKeyInput.value === 'Space' ? ' ' : toggleKeyInput.value.toLowerCase(),
       enableLogs: enableLogsCheckbox.checked,
       isRunning: currentConfig.isRunning
     };
@@ -225,9 +227,14 @@ document.addEventListener('DOMContentLoaded', async () => {
   const debouncedSave = debounce(saveConfig, 300);
 
   [tabASelect, tabBSelect, enableLogsCheckbox].forEach(el => el.addEventListener('change', saveConfig));
-  [toggleKeyInput].forEach(el => {
-    el.addEventListener('change', saveConfig);
-    el.addEventListener('keyup', debouncedSave);
+
+  toggleKeyInput.addEventListener('keydown', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (['Control', 'Shift', 'Alt', 'Meta'].includes(e.key)) return;
+    const keyName = e.key;
+    toggleKeyInput.value = keyName === ' ' ? 'Space' : keyName;
+    saveConfig();
   });
 
   // ─── React to External State Changes ──────────────────

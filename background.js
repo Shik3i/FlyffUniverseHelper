@@ -142,12 +142,14 @@ initialize();
 chrome.tabs.onRemoved.addListener((tabId) => {
   if (tabId === config.tabAId || tabId === config.tabBId) {
     LOG("Configured tab removed (ID:", tabId, "). Disabling service.");
-    if (config.isRunning) {
-      toggleService(false);
-    }
     if (tabId === config.tabAId) config.tabAId = null;
     if (tabId === config.tabBId) config.tabBId = null;
-    saveConfig();
+
+    if (config.isRunning) {
+      toggleService(false);
+    } else {
+      saveConfig();
+    }
   }
 });
 
