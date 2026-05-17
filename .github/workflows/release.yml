@@ -1,0 +1,25 @@
+name: Build and Release Extension
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Zip extension
+        run: |
+          zip -r KoalaFlyff.zip . -x "*.git*" -x ".github/*" -x "*.md" -x ".gitignore"
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v2
+        with:
+          files: KoalaFlyff.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
