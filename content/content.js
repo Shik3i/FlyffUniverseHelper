@@ -63,6 +63,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // ─── Keystroke Capture ─────────────────────────────────────
 
 window.addEventListener('keydown', (e) => {
+  // Skip programmatically generated/simulated keys to prevent feedback loops
+  if (!e.isTrusted) return;
+
   // Skip if user is typing in a text field
   if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable) return;
 
@@ -95,6 +98,8 @@ window.addEventListener('keydown', (e) => {
 // ─── Key Simulation ────────────────────────────────────────
 
 function simulateKeyPress(keyChar) {
+  if (!keyChar) return;
+
   const canvas = document.querySelector('canvas') || document.body;
   const upperChar = keyChar.toUpperCase();
   const keyCode = upperChar.charCodeAt(0);

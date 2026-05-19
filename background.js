@@ -135,11 +135,12 @@ async function initialize() {
   updateBadge();
 }
 
-initialize();
+let initPromise = initialize();
 
 // ─── Tab Removal Handler ───────────────────────────────────
 
-chrome.tabs.onRemoved.addListener((tabId) => {
+chrome.tabs.onRemoved.addListener(async (tabId) => {
+  await initPromise;
   if (tabId === config.tabAId || tabId === config.tabBId) {
     LOG("Configured tab removed (ID:", tabId, "). Disabling service.");
     if (tabId === config.tabAId) config.tabAId = null;
@@ -158,71 +159,83 @@ chrome.tabs.onRemoved.addListener((tabId) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
   if (message.type === 'ADD_LOG') {
-    if (config.enableLogs) {
-      addLogEntry(message.log, message.timestamp);
-    }
+    initPromise.then(() => {
+      if (config.enableLogs) {
+        addLogEntry(message.log, message.timestamp);
+      }
+    });
     return false;
   }
 
   if (message.type === 'REQUEST_LOGS') {
-    sendResponse(systemLogs);
-    return false;
+    initPromise.then(() => {
+      sendResponse(systemLogs);
+    });
+    return true; // Keep channel open!
   }
 
   if (message.type === 'UPDATE_CONFIG') {
-    LOG("Received UPDATE_CONFIG", message.payload);
+    initPromise.then(() => {
+      LOG("Received UPDATE_CONFIG", message.payload);
 
-    const requestedState = message.payload.isRunning;
-    const newConfig = { ...message.payload };
-    delete newConfig.isRunning;
+      const requestedState = message.payload.isRunning;
+      const newConfig = { ...message.payload };
+      delete newConfig.isRunning;
 
-    config = { ...config, ...newConfig };
-    saveConfig();
-    sendResponse({ status: 'success' });
+      config = { ...config, ...newConfig };
+      saveConfig();
+      sendResponse({ status: 'success' });
 
-    if (requestedState !== config.isRunning) {
-      LOG("State mismatch found, triggering service toggle!");
-      toggleService(requestedState);
-    }
-    return false;
+      if (requestedState !== config.isRunning) {
+        LOG("State mismatch found, triggering service toggle!");
+        toggleService(requestedState);
+      }
+    });
+    return true; // Keep channel open!
   }
 
   if (message.type === 'REQUEST_CONFIG') {
-    LOG("Received REQUEST_CONFIG. Sending back config block.");
-    sendResponse({ ...config, sessionStartTime });
-    return false;
+    initPromise.then(() => {
+      LOG("Received REQUEST_CONFIG. Sending back config block.");
+      sendResponse({ ...config, sessionStartTime });
+    });
+    return true; // Keep channel open!
   }
 
   if (message.type === 'TOGGLE_SERVICE_REQUEST') {
-    LOG("Received TOGGLE_SERVICE_REQUEST hotkey ping.");
-    toggleService(!config.isRunning);
+    initPromise.then(() => {
+      LOG("Received TOGGLE_SERVICE_REQUEST hotkey ping.");
+      toggleService(!config.isRunning);
+    });
     return false;
   }
 
   if (message.type === 'KEY_PRESSED') {
-    if (!config.isRunning) return false;
+    initPromise.then(() => {
+      if (!config.isRunning) return;
 
-    if (sender.tab && sender.tab.id === config.tabAId) {
-      const pressedKey = message.key.toLowerCase();
+      if (sender.tab && sender.tab.id === config.tabAId) {
+        const pressedKey = message.key.toLowerCase();
 
-      // Find all matching mappings and simulate the target key for each
-      const matches = (config.mappings || []).filter(
-        m => m.keyA.toLowerCase() === pressedKey
-      );
+        // Find all matching mappings and simulate the target key for each
+        const matches = (config.mappings || []).filter(
+          m => m.keyA.toLowerCase() === pressedKey
+        );
 
-      if (matches.length > 0 && config.tabBId) {
-        matches.forEach(m => {
-          LOG("Matched mapping:", m, "— routing key to Tab B.");
-          chrome.tabs.sendMessage(config.tabBId, {
-            type: 'SIMULATE_KEY',
-            key: m.keyB
-          }).catch(err => {
-            LOG("Failed to send SIMULATE_KEY to Tab B:", err.message || err);
-            toggleService(false);
+        if (matches.length > 0 && config.tabBId) {
+          matches.forEach(m => {
+            LOG("Matched mapping:", m, "— routing key to Tab B.");
+            chrome.tabs.sendMessage(config.tabBId, {
+              type: 'SIMULATE_KEY',
+              key: m.keyB
+            }).catch(err => {
+              LOG("Failed to send SIMULATE_KEY to Tab B:", err.message || err);
+              toggleService(false);
+            });
           });
-        });
+        }
       }
-    }
+    });
     return false;
   }
 

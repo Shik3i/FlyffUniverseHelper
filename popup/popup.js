@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const parsedTabB = parseInt(tabBSelect.value, 10);
 
     const newConfig = {
-      tabAId: !isNaN(parsedTabA) ? parsedTabA : (currentConfig.tabAId || null),
-      tabBId: !isNaN(parsedTabB) ? parsedTabB : (currentConfig.tabBId || null),
+      tabAId: !isNaN(parsedTabA) ? parsedTabA : null,
+      tabBId: !isNaN(parsedTabB) ? parsedTabB : null,
       mappings: currentConfig.mappings || [],
       toggleKey: toggleKeyInput.value === 'Space' ? ' ' : toggleKeyInput.value.toLowerCase(),
       enableLogs: enableLogsCheckbox.checked,
