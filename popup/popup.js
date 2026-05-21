@@ -179,7 +179,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ─── Load Config ───────────────────────────────────────
 
   chrome.runtime.sendMessage({ type: 'REQUEST_CONFIG' }, (response) => {
-    if (chrome.runtime.lastError || !response) return;
+    if (chrome.runtime.lastError) {
+      LOG('Failed to fetch initial config:', chrome.runtime.lastError);
+      return;
+    }
+    if (!response) return;
 
     currentConfig = response;
 
@@ -221,7 +225,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     LOG('Saving config:', newConfig);
     currentConfig = newConfig;
 
-    chrome.runtime.sendMessage({ type: 'UPDATE_CONFIG', payload: newConfig });
+    chrome.runtime.sendMessage({ type: 'UPDATE_CONFIG', payload: newConfig }, (response) => {
+      if (chrome.runtime.lastError) {
+        LOG('Failed to save config:', chrome.runtime.lastError);
+      }
+    });
   };
 
   const debouncedSave = debounce(saveConfig, 300);
@@ -248,7 +256,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         updateRunningUI(newCfg.isRunning, null);
 
         chrome.runtime.sendMessage({ type: 'REQUEST_CONFIG' }, (response) => {
-          if (chrome.runtime.lastError || !response) return;
+          if (chrome.runtime.lastError) {
+            LOG('Failed to fetch config after storage change:', chrome.runtime.lastError);
+            return;
+          }
+          if (!response) return;
           updateRunningUI(response.isRunning, response.sessionStartTime);
         });
       }
@@ -357,7 +369,12 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function renderLogs() {
     chrome.runtime.sendMessage({ type: 'REQUEST_LOGS' }, (logs) => {
-      if (chrome.runtime.lastError || !logs || logs.length === 0) {
+      if (chrome.runtime.lastError) {
+        LOG('Failed to fetch logs:', chrome.runtime.lastError);
+        logsList.innerHTML = '<p class="empty-state">Failed to load logs.</p>';
+        return;
+      }
+      if (!logs || logs.length === 0) {
         logsList.innerHTML = '<p class="empty-state">No debug logs captured yet. Make sure Logging is enabled in Settings!</p>';
         return;
       }

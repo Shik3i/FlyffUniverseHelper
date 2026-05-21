@@ -205,8 +205,7 @@
     if (!timerEl) return;
 
     let seconds = 14 * 60 + 32;
-
-    setInterval(() => {
+    const timerInterval = setInterval(() => {
       seconds++;
       const h = Math.floor(seconds / 3600);
       const m = Math.floor((seconds % 3600) / 60);
@@ -216,6 +215,39 @@
         String(m).padStart(2, '0') + ':' +
         String(s).padStart(2, '0');
     }, 1000);
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      clearInterval(timerInterval);
+    });
+  }
+
+  /* ── Mockup: tab click handler ─────────────────────── */
+  function initMockupTabs() {
+    const tabs = document.querySelectorAll('.pm-tab');
+    if (!tabs.length) return;
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const panelId = tab.getAttribute('data-panel');
+        if (!panelId) return;
+
+        // Update tab active states
+        tabs.forEach(t => t.classList.remove('pm-tab-active'));
+        tab.classList.add('pm-tab-active');
+
+        // Update panel visibility
+        document.querySelectorAll('.pm-body').forEach(panel => {
+          panel.style.display = 'none';
+          panel.classList.remove('pm-panel-active');
+        });
+        const activePanel = document.getElementById(panelId);
+        if (activePanel) {
+          activePanel.style.display = 'flex';
+          activePanel.classList.add('pm-panel-active');
+        }
+      });
+    });
   }
 
   /* ── Active nav link highlight ─────────────────────── */
@@ -262,6 +294,7 @@
     initLangToggle();
     initEmailReveal();
     initMockupAnimation();
+    initMockupTabs();
     initActiveNavLink();
   }
 

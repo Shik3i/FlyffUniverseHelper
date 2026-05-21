@@ -62,7 +62,7 @@ function saveConfig() {
 
 // ─── Service Toggle ────────────────────────────────────────
 
-function toggleService(newState) {
+async function toggleService(newState) {
   LOG("toggleService called with state:", newState);
   if (config.isRunning === newState) {
     LOG("State already matches, ignoring.");
@@ -81,10 +81,12 @@ function toggleService(newState) {
     LOG("Service Stopped. Calculating session duration...");
     if (sessionStartTime) {
       const sessionDuration = Date.now() - sessionStartTime;
+      const savedSessionStartTime = sessionStartTime;
       sessionStartTime = null;
       chrome.storage.session.remove('sessionStartTime');
 
-      chrome.storage.local.get(['sessionHistory'], (result) => {
+      try {
+        const result = await chrome.storage.local.get(['sessionHistory']);
         const history = result.sessionHistory || [];
         history.unshift({
           start: Date.now() - sessionDuration,
@@ -92,9 +94,14 @@ function toggleService(newState) {
           duration: sessionDuration
         });
         if (history.length > 50) history.length = 50;
-        chrome.storage.local.set({ sessionHistory: history });
+        await chrome.storage.local.set({ sessionHistory: history });
         LOG("Session saved. Duration:", sessionDuration, "ms");
-      });
+      } catch (err) {
+        LOG("Failed to save session history:", err);
+        // Restore sessionStartTime on failure to prevent data loss
+        sessionStartTime = savedSessionStartTime;
+        chrome.storage.session.set({ sessionStartTime });
+      }
     }
   }
 }
@@ -163,6 +170,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
       if (config.enableLogs) {
         addLogEntry(message.log, message.timestamp);
       }
+    }).catch(err => {
+      console.error('ADD_LOG handler error:', err);
     });
     return false;
   }
@@ -170,6 +179,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'REQUEST_LOGS') {
     initPromise.then(() => {
       sendResponse(systemLogs);
+    }).catch(err => {
+      console.error('REQUEST_LOGS handler error:', err);
+      sendResponse([]);
     });
     return true; // Keep channel open!
   }
@@ -190,6 +202,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         LOG("State mismatch found, triggering service toggle!");
         toggleService(requestedState);
       }
+    }).catch(err => {
+      console.error('UPDATE_CONFIG handler error:', err);
+      sendResponse({ status: 'error', error: err.message });
     });
     return true; // Keep channel open!
   }
@@ -197,6 +212,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === 'REQUEST_CONFIG') {
     initPromise.then(() => {
       LOG("Received REQUEST_CONFIG. Sending back config block.");
+      sendResponse({ ...config, sessionStartTime });
+    }).catch(err => {
+      console.error('REQUEST_CONFIG handler error:', err);
       sendResponse({ ...config, sessionStartTime });
     });
     return true; // Keep channel open!
@@ -206,6 +224,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     initPromise.then(() => {
       LOG("Received TOGGLE_SERVICE_REQUEST hotkey ping.");
       toggleService(!config.isRunning);
+    }).catch(err => {
+      console.error('TOGGLE_SERVICE_REQUEST handler error:', err);
     });
     return false;
   }
@@ -235,6 +255,8 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           });
         }
       }
+    }).catch(err => {
+      console.error('KEY_PRESSED handler error:', err);
     });
     return false;
   }

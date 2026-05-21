@@ -15,13 +15,43 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Validate required files
+        run: |
+          echo "Validating required extension files..."
+          required_files=("manifest.json" "background.js" "content/content.js" "popup/popup.html" "popup/popup.js" "popup/popup.css" "icon.png")
+          missing_files=()
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              missing_files+=("$file")
+            fi
+          done
+          if [ ${#missing_files[@]} -gt 0 ]; then
+            echo "❌ Missing required files: ${missing_files[*]}"
+            exit 1
+          fi
+          echo "✅ All required files present"
+
       - name: Zip extension
         run: |
           zip -r KoalaFlyff.zip . -x "*.git*" -x ".github/*" -x "*.md" -x ".gitignore"
+
+      - name: Validate zip file
+        run: |
+          if [ ! -f "KoalaFlyff.zip" ]; then
+            echo "❌ Zip file was not created"
+            exit 1
+          fi
+          zip_size=$(stat -f%z KoalaFlyff.zip 2>/dev/null || stat -c%s KoalaFlyff.zip 2>/dev/null)
+          if [ "$zip_size" -lt 1000 ]; then
+            echo "❌ Zip file is too small ($zip_size bytes), likely corrupted"
+            exit 1
+          fi
+          echo "✅ Zip file created successfully ($zip_size bytes)"
 
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v2
         with:
           files: KoalaFlyff.zip
+          fail_on_unmatched_files: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

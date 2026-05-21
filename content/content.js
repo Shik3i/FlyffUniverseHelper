@@ -28,7 +28,11 @@ let watchedKeys = new Set();
 
 try {
   chrome.runtime.sendMessage({ type: 'REQUEST_CONFIG' }, (config) => {
-    if (chrome.runtime.lastError || !config) return;
+    if (chrome.runtime.lastError) {
+      console.error('Failed to fetch initial config:', chrome.runtime.lastError);
+      return;
+    }
+    if (!config) return;
 
     isActive = config.isRunning;
     currentToggleKey = (config.toggleKey || '').toLowerCase();
@@ -102,12 +106,48 @@ function simulateKeyPress(keyChar) {
 
   const canvas = document.querySelector('canvas') || document.body;
   const upperChar = keyChar.toUpperCase();
-  const keyCode = upperChar.charCodeAt(0);
-
-  let code = `Key${upperChar}`;
-  if (/^[0-9]$/.test(keyChar)) code = `Digit${keyChar}`;
-  else if (keyChar === ' ') code = 'Space';
-  else if (keyChar.length > 1) code = keyChar;
+  
+  // Handle special keys with proper key codes
+  let keyCode;
+  let code;
+  
+  if (keyChar.length > 1) {
+    // Special keys (F1, Enter, Escape, etc.)
+    code = keyChar;
+    const specialKeyCodes = {
+      'Enter': 13,
+      'Escape': 27,
+      'Space': 32,
+      'ArrowUp': 38,
+      'ArrowDown': 40,
+      'ArrowLeft': 37,
+      'ArrowRight': 39,
+      'F1': 112, 'F2': 113, 'F3': 114, 'F4': 115, 'F5': 116,
+      'F6': 117, 'F7': 118, 'F8': 119, 'F9': 120, 'F10': 121,
+      'F11': 122, 'F12': 123,
+      'Tab': 9,
+      'Backspace': 8,
+      'Delete': 46,
+      'Insert': 45,
+      'Home': 36,
+      'End': 35,
+      'PageUp': 33,
+      'PageDown': 34
+    };
+    keyCode = specialKeyCodes[keyChar] || keyChar.charCodeAt(0);
+  } else if (/^[0-9]$/.test(keyChar)) {
+    // Digit keys
+    code = `Digit${keyChar}`;
+    keyCode = keyChar.charCodeAt(0);
+  } else if (keyChar === ' ') {
+    // Space
+    code = 'Space';
+    keyCode = 32;
+  } else {
+    // Letter keys
+    code = `Key${upperChar}`;
+    keyCode = upperChar.charCodeAt(0);
+  }
 
   const baseProps = {
     key: keyChar,
