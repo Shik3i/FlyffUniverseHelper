@@ -168,13 +168,13 @@
 
           <!-- Tabs -->
           <div class="pm-tabs">
-            <span class="pm-tab pm-tab-active">Settings</span>
-            <span class="pm-tab">History</span>
-            <span class="pm-tab">Logs</span>
+            <span class="pm-tab pm-tab-active" data-panel="panel-settings">Settings</span>
+            <span class="pm-tab" data-panel="panel-history">History</span>
+            <span class="pm-tab" data-panel="panel-logs">Logs</span>
           </div>
 
           <!-- Settings panel -->
-          <div class="pm-body">
+          <div class="pm-body pm-panel-active" id="panel-settings">
 
             <!-- Card: Tabs -->
             <div class="pm-card">
@@ -267,7 +267,58 @@
               <span class="pm-timer-val" id="mockup-timer">00:14:32</span>
             </div>
 
-          </div><!-- /pm-body -->
+          </div><!-- /panel-settings -->
+
+          <!-- History panel -->
+          <div class="pm-body" id="panel-history" style="display: none;">
+            <div class="pm-card">
+              <span class="pm-card-label">Session History</span>
+              <div class="pm-history-list">
+                <div class="pm-history-item">
+                  <div class="pm-history-info">
+                    <strong>Today, 03:14</strong>
+                    <span>Main → Support</span>
+                  </div>
+                  <span class="pm-history-badge">2h 34m</span>
+                </div>
+                <div class="pm-history-item">
+                  <div class="pm-history-info">
+                    <strong>Yesterday, 21:05</strong>
+                    <span>Main → Support</span>
+                  </div>
+                  <span class="pm-history-badge">1h 12m</span>
+                </div>
+                <div class="pm-history-item">
+                  <div class="pm-history-info">
+                    <strong>2 days ago</strong>
+                    <span>Main → Support</span>
+                  </div>
+                  <span class="pm-history-badge">3h 01m</span>
+                </div>
+              </div>
+            </div>
+          </div><!-- /panel-history -->
+
+          <!-- Logs panel -->
+          <div class="pm-body" id="panel-logs" style="display: none;">
+            <div class="pm-card">
+              <span class="pm-card-label">System Logs</span>
+              <div class="pm-logs-list">
+                <div class="pm-log-item">
+                  <span class="pm-log-time">14:32:05</span>
+                  <span class="pm-log-text">Key 'C' routed from Tab A to Tab B</span>
+                </div>
+                <div class="pm-log-item">
+                  <span class="pm-log-time">14:32:08</span>
+                  <span class="pm-log-text">Key 'V' routed from Tab A to Tab B</span>
+                </div>
+                <div class="pm-log-item">
+                  <span class="pm-log-time">14:33:12</span>
+                  <span class="pm-log-text">Service started via hotkey</span>
+                </div>
+              </div>
+            </div>
+          </div><!-- /panel-logs -->
         </div><!-- /popup-mockup -->
       </div>
     </div>
@@ -406,8 +457,8 @@
             <span lang="de">Erweiterung installieren</span>
           </h3>
           <p class="step-desc">
-            <span lang="en">Download the latest <code>.zip</code> from GitHub Releases. For Chrome/Edge/Brave, enable <em>Developer mode</em> and hit <strong>Load unpacked</strong>. Select the extracted folder containing <code>manifest.json</code>.</span>
-            <span lang="de">Lade das neueste <code>.zip</code> aus den GitHub-Releases. Aktiviere für Chrome/Edge/Brave den <em>Entwicklermodus</em> und klicke auf <strong>„Entpackte Erweiterung laden"</strong>. Wähle den extrahierten Ordner mit <code>manifest.json</code>.</span>
+            <span lang="en">Download the latest <code>.zip</code> from GitHub Releases. For <strong></strong>Chrome/Edge/Brave</strong>, enable <em>Developer mode</em> and hit <strong>Load unpacked</strong>. For <strong>Firefox</strong>, navigate to <code>about:debugging#/runtime/this-firefox</code>, click <strong>Load Temporary Add-on</strong>, and select <code>manifest.json</code>.</span>
+            <span lang="de">Lade das neueste <code>.zip</code> aus den GitHub-Releases. Für <strong>Chrome/Edge/Brave</strong> aktiviere den <em>Entwicklermodus</em> und klicke auf <strong>„Entpackte Erweiterung laden"</strong>. Für <strong>Firefox</strong> navigiere zu <code>about:debugging#/runtime/this-firefox</code>, klicke auf <strong>„Temporäres Add-on laden"</strong> und wähle <code>manifest.json</code>.</span>
           </p>
           <a href="https://github.com/Shik3i/FlyffUniverseHelper/releases/latest"
              target="_blank" rel="noopener noreferrer"
@@ -417,45 +468,24 @@
           </a>
         </div>
         <div class="step-visual" aria-hidden="true">
-          <div class="visual-install">
-            <div class="vi-browser-bar">
-              <div class="vi-dots">
-                <span></span><span></span><span></span>
+          <div class="visual-install-compact">
+            <div class="vi-row vi-row-header">
+              <span>Extensions</span>
+              <div class="vi-toggle-wrap">
+                <span class="vi-toggle-label">Developer mode</span>
+                <div class="vi-toggle vi-toggle-on"></div>
               </div>
-              <div class="vi-url">chrome://extensions</div>
             </div>
-            <div class="vi-body">
-              <div class="vi-row vi-row-header">
-                <span>Extensions</span>
-                <div class="vi-toggle-wrap">
-                  <span class="vi-toggle-label">
-                    <span lang="en">Developer mode</span>
-                    <span lang="de">Entwicklermodus</span>
-                  </span>
-                  <div class="vi-toggle vi-toggle-on"></div>
-                </div>
+            <div class="vi-btn-row">
+              <div class="vi-chip vi-chip-active">Load unpacked</div>
+            </div>
+            <div class="vi-ext-card">
+              <img src="assets/icon.png" alt="" width="24" height="24">
+              <div class="vi-ext-info">
+                <span class="vi-ext-name">KoalaFlyff</span>
+                <span class="vi-ext-desc">Multi-boxing for Flyff Universe</span>
               </div>
-              <div class="vi-btn-row">
-                <div class="vi-chip vi-chip-active">
-                  <span lang="en">Load unpacked</span>
-                  <span lang="de">Entpackte laden</span>
-                </div>
-                <div class="vi-chip">
-                  <span lang="en">Pack extension</span>
-                  <span lang="de">Erweiterung packen</span>
-                </div>
-              </div>
-              <div class="vi-ext-card">
-                <img src="assets/icon.png" alt="" width="32" height="32">
-                <div class="vi-ext-info">
-                  <span class="vi-ext-name">KoalaFlyff</span>
-                  <span class="vi-ext-desc">
-                    <span lang="en">Multi-boxing for Flyff Universe</span>
-                    <span lang="de">Multi-Boxing für Flyff Universe</span>
-                  </span>
-                </div>
-                <div class="vi-ext-toggle vi-toggle vi-toggle-on"></div>
-              </div>
+              <div class="vi-ext-toggle vi-toggle vi-toggle-on"></div>
             </div>
           </div>
         </div>
@@ -464,44 +494,53 @@
       <!-- Step 2 -->
       <div class="step step-even" data-reveal>
         <div class="step-visual" aria-hidden="true">
-          <div class="vs-page">
-            <div class="vs-banner">
-              <span class="vs-banner-dot"></span>
-              <span lang="en">🎮 KoalaFlyff — Service Active</span>
-              <span lang="de">🎮 KoalaFlyff — Service aktiv</span>
-            </div>
-            <div class="vs-game-ui">
-              <div class="vs-tabs-row">
-                <div class="vs-tab vs-tab-active">
-                  <span>🗡️ Main</span>
-                  <span class="vs-tab-badge vs-badge-green">
-                    <span lang="en">Listener</span>
-                    <span lang="de">Listener</span>
-                  </span>
-                </div>
-                <div class="vs-tab">
-                  <span>🧙 Support</span>
-                  <span class="vs-tab-badge vs-badge-purple">
-                    <span lang="en">Target</span>
-                    <span lang="de">Ziel</span>
-                  </span>
+          <div class="visual-popup-compact">
+            <!-- Card: Tabs Selection -->
+            <div class="vp-card">
+              <span class="vp-card-label">Tabs</span>
+              <div class="vp-form-group">
+                <label class="vp-label">Main Character (Listener Tab)</label>
+                <div class="vp-select-fake">
+                  <span class="vp-select-value">⚔️ KoalaWarrior</span>
+                  <span class="vp-select-arrow">▼</span>
                 </div>
               </div>
-              <div class="vs-mapping-preview">
-                <div class="vs-map-row vs-map-active">
-                  <span class="vs-key-chip">C</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  <span class="vs-key-chip">1</span>
-                  <span class="vs-map-label">
-                    <span lang="en">Heal cast ✓</span>
-                    <span lang="de">Heilzauber ✓</span>
-                  </span>
+              <div class="vp-form-group">
+                <label class="vp-label">Support Character (Target Tab)</label>
+                <div class="vp-select-fake">
+                  <span class="vp-select-value">🧙 PersonalSupport</span>
+                  <span class="vp-select-arrow">▼</span>
                 </div>
-                <div class="vs-map-row">
-                  <span class="vs-key-chip">V</span>
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  <span class="vs-key-chip">2</span>
-                  <span class="vs-map-label">Buff</span>
+              </div>
+            </div>
+
+            <!-- Card: Key Mappings -->
+            <div class="vp-card">
+              <div class="vp-card-header-row">
+                <span class="vp-card-label">Key Mappings</span>
+                <button class="vp-add-btn" tabindex="-1">
+                  <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add
+                </button>
+              </div>
+              <div class="vp-mappings">
+                <div class="vp-map-row">
+                  <input class="vp-key-input" value="C" readonly tabindex="-1">
+                  <svg class="vp-map-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  <input class="vp-key-input" value="1" readonly tabindex="-1">
+                  <span class="vp-map-hint">Heal</span>
+                  <button class="vp-map-del" tabindex="-1" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                  </button>
+                </div>
+                <div class="vp-map-row">
+                  <input class="vp-key-input" value="V" readonly tabindex="-1">
+                  <svg class="vp-map-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  <input class="vp-key-input" value="2" readonly tabindex="-1">
+                  <span class="vp-map-hint">Buff</span>
+                  <button class="vp-map-del" tabindex="-1" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                  </button>
                 </div>
               </div>
             </div>
@@ -542,57 +581,25 @@
           </p>
         </div>
         <div class="step-visual" aria-hidden="true">
-          <div class="visual-popup">
-            <div class="vp-header">
-              <div class="vp-header-left">
-                <img src="assets/icon.png" alt="" width="20" height="20">
-                <span>KoalaFlyff</span>
-              </div>
-              <span class="vp-version">v1.3</span>
-            </div>
-            <div class="vp-history">
-              <div class="vp-hist-label">
-                <span lang="en">Session History</span>
-                <span lang="de">Session-Verlauf</span>
-              </div>
-              <div class="vp-hist-item">
-                <div class="vp-hist-info">
-                  <strong>
-                    <span lang="en">Today, 03:14</span>
-                    <span lang="de">Heute, 03:14</span>
-                  </strong>
-                  <span>
-                    <span lang="en">Main → Support</span>
-                    <span lang="de">Main → Support</span>
-                  </span>
+          <div class="visual-popup-compact">
+            <!-- Card: Session History (fokussierter Ausschnitt) -->
+            <div class="vp-card">
+              <span class="vp-card-label">Session History</span>
+              <div class="vp-history-list">
+                <div class="vp-history-item">
+                  <div class="vp-history-info">
+                    <strong>Today, 03:14</strong>
+                    <span>Main → Support</span>
+                  </div>
+                  <span class="vp-history-badge">2h 34m</span>
                 </div>
-                <span class="vp-hist-badge">2h 34m</span>
-              </div>
-              <div class="vp-hist-item">
-                <div class="vp-hist-info">
-                  <strong>
-                    <span lang="en">Yesterday, 21:05</span>
-                    <span lang="de">Gestern, 21:05</span>
-                  </strong>
-                  <span>
-                    <span lang="en">Main → Support</span>
-                    <span lang="de">Main → Support</span>
-                  </span>
+                <div class="vp-history-item">
+                  <div class="vp-history-info">
+                    <strong>Yesterday, 21:05</strong>
+                    <span>Main → Support</span>
+                  </div>
+                  <span class="vp-history-badge">1h 12m</span>
                 </div>
-                <span class="vp-hist-badge">1h 12m</span>
-              </div>
-              <div class="vp-hist-item">
-                <div class="vp-hist-info">
-                  <strong>
-                    <span lang="en">2 days ago</span>
-                    <span lang="de">Vor 2 Tagen</span>
-                  </strong>
-                  <span>
-                    <span lang="en">Main → Support</span>
-                    <span lang="de">Main → Support</span>
-                  </span>
-                </div>
-                <span class="vp-hist-badge">3h 01m</span>
               </div>
             </div>
           </div>
