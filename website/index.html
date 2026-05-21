@@ -9,7 +9,7 @@
   <meta property="og:description" content="Cross-tab key mapper for Flyff Universe. Up to 10 key mappings, global toggle hotkey, session analytics — zero tracking.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://koalaflyff.koalastuff.net">
-  <meta name="theme-color" content="#0f1115">
+  <meta name="theme-color" content="#0f172a">
   <link rel="canonical" href="https://koalaflyff.koalastuff.net">
   <link rel="icon" type="image/png" href="assets/icon.png">
   <link rel="stylesheet" href="style.css">
@@ -127,10 +127,10 @@
           </div>
           <div class="stat-divider" aria-hidden="true"></div>
           <div class="stat">
-            <span class="stat-value">~5ms</span>
+            <span class="stat-value">5ms</span>
             <span class="stat-label">
-              <span lang="en">Input Lag</span>
-              <span lang="de">Eingabeverzögerung</span>
+              <span lang="en">Min. Input Lag</span>
+              <span lang="de">Min. Eingabeverzögerung</span>
             </span>
           </div>
           <div class="stat-divider" aria-hidden="true"></div>
@@ -144,111 +144,131 @@
         </div>
       </div>
 
-      <!-- Interactive popup mockup -->
+      <!-- Faithful popup mockup -->
       <div class="hero-mockup" data-reveal aria-label="KoalaFlyff popup interface preview">
+        <!-- Browser chrome bar -->
         <div class="mockup-browser-bar">
           <span class="mockup-dot mockup-dot-red"></span>
           <span class="mockup-dot mockup-dot-yellow"></span>
           <span class="mockup-dot mockup-dot-green"></span>
           <span class="mockup-url-bar">universe.flyff.com</span>
           <div class="mockup-ext-icon" title="KoalaFlyff active">
-            <img src="assets/icon.png"
-                 alt="KoalaFlyff icon" width="16" height="16">
+            <img src="assets/icon.png" alt="KoalaFlyff icon" width="16" height="16">
           </div>
         </div>
 
+        <!-- Popup — mirrors popup.html + popup.css exactly -->
         <div class="popup-mockup">
-          <!-- Popup Header -->
+
+          <!-- Header: gradient title + indicator dot -->
           <div class="pm-header">
-            <div class="pm-header-title">
-              <img src="assets/icon.png"
-                   alt="" width="22" height="22" aria-hidden="true">
-              <span class="pm-title">KoalaFlyff</span>
-            </div>
-            <div class="pm-status pm-status-active" id="mockup-status">
-              <span class="pm-status-dot"></span>
-              <span lang="en">Active</span>
-              <span lang="de">Aktiv</span>
-            </div>
+            <h2 class="pm-title-gradient">KoalaFlyff</h2>
+            <div class="pm-indicator pm-indicator-active" id="mockup-indicator"></div>
           </div>
 
           <!-- Tabs -->
           <div class="pm-tabs">
-            <span class="pm-tab pm-tab-active">
-              <span lang="en">Settings</span>
-              <span lang="de">Einstellungen</span>
-            </span>
-            <span class="pm-tab">
-              <span lang="en">History</span>
-              <span lang="de">Verlauf</span>
-            </span>
+            <span class="pm-tab pm-tab-active">Settings</span>
+            <span class="pm-tab">History</span>
             <span class="pm-tab">Logs</span>
           </div>
 
-          <!-- Tab selection -->
-          <div class="pm-section">
-            <div class="pm-label">
-              <span lang="en">Main Character (Listener)</span>
-              <span lang="de">Hauptcharakter (Listener)</span>
-            </div>
-            <div class="pm-select-row">
-              <div class="pm-select-dot pm-dot-green"></div>
-              <span class="pm-select-text">Tab 1 — universe.flyff.com</span>
-            </div>
-            <div class="pm-label" style="margin-top:8px;">
-              <span lang="en">Support Character (Target)</span>
-              <span lang="de">Supportcharakter (Ziel)</span>
-            </div>
-            <div class="pm-select-row">
-              <div class="pm-select-dot pm-dot-purple"></div>
-              <span class="pm-select-text">Tab 2 — universe.flyff.com</span>
-            </div>
-          </div>
+          <!-- Settings panel -->
+          <div class="pm-body">
 
-          <!-- Key Mappings -->
-          <div class="pm-section">
-            <div class="pm-section-header">
-              <span class="pm-label-bold">
-                <span lang="en">Key Mappings</span>
-                <span lang="de">Tastenmappings</span>
-              </span>
-              <span class="pm-add-chip">+ <span lang="en">Add</span><span lang="de">Hinzu</span></span>
-            </div>
-            <div class="pm-mappings">
-              <div class="pm-mapping-row pm-mapping-active">
-                <span class="pm-key">C</span>
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                <span class="pm-key">1</span>
-                <span class="pm-key-desc">
-                  <span lang="en">Heal</span>
-                  <span lang="de">Heilen</span>
-                </span>
+            <!-- Card: Tabs -->
+            <div class="pm-card">
+              <span class="pm-card-label">Tabs</span>
+              <div class="pm-form-group">
+                <label class="pm-label">
+                  <span lang="en">Main Character (Listener Tab)</span>
+                  <span lang="de">Hauptcharakter (Listener-Tab)</span>
+                </label>
+                <div class="pm-select-fake">
+                  <span class="pm-select-value">⚔️ KoalaWarrior</span>
+                  <span class="pm-select-arrow">▼</span>
+                </div>
               </div>
-              <div class="pm-mapping-row">
-                <span class="pm-key">V</span>
-                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                <span class="pm-key">2</span>
-                <span class="pm-key-desc">
-                  <span lang="en">Buff</span>
-                  <span lang="de">Buff</span>
-                </span>
+              <div class="pm-form-group">
+                <label class="pm-label">
+                  <span lang="en">Support Character (Target Tab)</span>
+                  <span lang="de">Supportcharakter (Ziel-Tab)</span>
+                </label>
+                <div class="pm-select-fake">
+                  <span class="pm-select-value">🧙 PersonalSupport</span>
+                  <span class="pm-select-arrow">▼</span>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- Start Button -->
-          <div class="pm-footer">
-            <button class="pm-toggle-btn pm-toggle-running" tabindex="-1">
+            <!-- Card: Key Mappings -->
+            <div class="pm-card">
+              <div class="pm-card-header-row">
+                <span class="pm-card-label">Key Mappings</span>
+                <button class="pm-add-btn" tabindex="-1">
+                  <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  Add
+                </button>
+              </div>
+              <div class="pm-mappings">
+                <div class="pm-map-row">
+                  <input class="pm-key-input" value="C" readonly tabindex="-1">
+                  <svg class="pm-map-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  <input class="pm-key-input" value="1" readonly tabindex="-1">
+                  <span class="pm-map-hint">
+                    <span lang="en">Heal</span><span lang="de">Heilen</span>
+                  </span>
+                  <button class="pm-map-del" tabindex="-1" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                  </button>
+                </div>
+                <div class="pm-map-row">
+                  <input class="pm-key-input" value="V" readonly tabindex="-1">
+                  <svg class="pm-map-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                  <input class="pm-key-input" value="2" readonly tabindex="-1">
+                  <span class="pm-map-hint">Buff</span>
+                  <button class="pm-map-del" tabindex="-1" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="11" height="11" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card: Options -->
+            <div class="pm-card">
+              <span class="pm-card-label">Options</span>
+              <div class="pm-form-group">
+                <label class="pm-label">
+                  <span lang="en">Service Toggle Hotkey</span>
+                  <span lang="de">Service-Toggle-Hotkey</span>
+                </label>
+                <input class="pm-hotkey-input" value="Ö" readonly tabindex="-1">
+              </div>
+              <div class="pm-checkbox-row">
+                <label class="pm-label" style="flex:1">
+                  <span lang="en">Enable Debug Logging</span>
+                  <span lang="de">Debug-Protokoll aktivieren</span>
+                </label>
+                <input type="checkbox" tabindex="-1" aria-hidden="true">
+              </div>
+            </div>
+
+            <!-- Start/Stop Button -->
+            <button class="pm-start-btn pm-start-active" tabindex="-1">
               <span lang="en">Stop Service</span>
               <span lang="de">Service stoppen</span>
+              <div class="pm-btn-glow"></div>
             </button>
-            <div class="pm-timer">
-              <span lang="en">Session: </span>
-              <span lang="de">Session: </span>
+
+            <!-- Live timer -->
+            <div class="pm-live-timer">
+              <span lang="en">Current Session:</span>
+              <span lang="de">Aktuelle Session:</span>
               <span class="pm-timer-val" id="mockup-timer">00:14:32</span>
             </div>
-          </div>
-        </div>
+
+          </div><!-- /pm-body -->
+        </div><!-- /popup-mockup -->
       </div>
     </div>
   </section>
